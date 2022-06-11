@@ -15,6 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
 
@@ -23,7 +24,7 @@ public class UserController {
     }
 
 
-    @GetMapping(value = "/users", produces = "application/json")
+    @GetMapping( produces = "application/json")
     public ResponseEntity<List<UserDTO>> getAll(){
         List<UserDTO> userDTOList = userService.getAll().stream().map(user -> {
           return UserAdapter.userToUserDto(user);
@@ -32,7 +33,7 @@ public class UserController {
         return new ResponseEntity<>(userDTOList, HttpStatus.OK);
     }
 
-    @GetMapping(value="/users/{id}", produces = "application/json")
+    @GetMapping(value="/{id}", produces = "application/json")
     public ResponseEntity<?> get(@PathVariable Long id){
         Optional<User> userFound = userService.get(id);
         if(userFound.isPresent()){
@@ -42,7 +43,7 @@ public class UserController {
     }
 
 
-    @PostMapping(value = "/users")
+    @PostMapping
     public ResponseEntity<?> add(@RequestBody UserDTO userDTO){
         User newUser = UserAdapter.userDtoToUser(userDTO);
         UserDTO createdUserDTO = UserAdapter.userToUserDto(userService.add(newUser));
@@ -50,14 +51,14 @@ public class UserController {
         return new ResponseEntity<>(createdUserDTO, HttpStatus.OK);
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
         userService.delete(id);
         return new ResponseEntity<>("Delete Successful", HttpStatus.OK);
     }
 
 
-    @PutMapping(value = "/users/{id}", consumes = "application/json")
+    @PutMapping(value = "/{id}", consumes = "application/json")
     public ResponseEntity<?> update(@RequestBody UserDTO userDTO, @PathVariable Long id){
         User newUser = UserAdapter.userDtoToUser(userDTO);
         userService.update(newUser, id);
