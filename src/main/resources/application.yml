@@ -2,9 +2,9 @@ spring:
   application:
     name: blog-user-service
   datasource:
-    password: password
+    password: root
     username: root
-    url: jdbc:mysql://localhost/cs544
+    url: jdbc:mysql://localhost/blog_users
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -19,3 +19,12 @@ spring:
         mode: always
 server:
   port: 8082
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    hostname: localhost
